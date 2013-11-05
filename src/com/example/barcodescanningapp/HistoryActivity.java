@@ -1,25 +1,32 @@
 package com.example.barcodescanningapp;
 
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class HistoryActivity extends Activity {
 
 	// List view
 	private ListView lv;
-
+	String id;
+	String intime;
+	String outtime;
 	// Listview Adapter
 	ArrayAdapter<String> adapter;
 
@@ -33,87 +40,64 @@ public class HistoryActivity extends Activity {
 		setContentView(R.layout.activity_multiplehistory);
 
 		ActionBar actionBar = getActionBar();
-	    actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setBackgroundDrawable(new ColorDrawable(Color.GRAY));
-		
-		
 		List<String> history = new ArrayList<String>();
-		
-
-		Intent i = this.getIntent();
-		/*final String bus_stop_type = i.getExtras().getString("bus_stop_type");
-		final String bus_stop_source = i.getExtras().getString(
-				"bus_stop_source");
-		final String bus_stop_destination = i.getExtras().getString(
-				"bus_stop_destination");*/
-
-		lv = (ListView) findViewById(R.id.list_view);
-		//inputSearch = (EditText) findViewById(R.id.inputSearch);
-
-		// Adding items to listview
-		adapter = new ArrayAdapter<String>(this,
-				R.layout.activity_singlehistory, R.id.bus_stop_name,
-				history);
-		lv.setAdapter(adapter);
-
-		lv.setAdapter(adapter);
-
-/*		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, final View view,
-					int position, long id) {
-
-				String stop = ((TextView) view).getText().toString();
-				if (bus_stop_type.contains("source")) {
-					stop = bus_stop_type + '_' + stop + '_'
-							+ bus_stop_destination;
+		TextView Student = (TextView) findViewById(R.id.textView1);
+		JSONObject jsonResponse;
+		System.out.println(MainActivity.responseString);
+		try {
+			jsonResponse = new JSONObject(MainActivity.responseString);
+			id = jsonResponse.getString("_id");
+			JSONArray inOutArrey = jsonResponse.getJSONArray("time_in_out");
+			Student.setText("Student: " + id);
+			// history.add(inOutArrey.getJSONObject(0).getString("intime"));
+			for (int i = inOutArrey.length() - 1; i >= 0; i--) {
+				String in = inOutArrey.getJSONObject(i).getString("intime");
+				String out = inOutArrey.getJSONObject(i).getString("outtime");
+				// System.out.println(in+"_________"+out);
+				if (in.contains("none")) {
+					intime = "none";
 				} else {
-					stop = bus_stop_type + '_' + bus_stop_source + '_' + stop;
+					Long inl = Long.parseLong(in);
+					intime = dateConverter(inl);
 				}
 
-				
-				 * Context context = getApplicationContext();
-				 * 
-				 * CharSequence text = stop;
-				 * 
-				 * int duration = Toast.LENGTH_SHORT;
-				 * 
-				 * Toast toast = Toast.makeText(context, text, duration);
-				 * 
-				 * toast.show();
-				 
+				if (out.contains("none")) {
+					outtime = "none";
+				} else {
+					Long outl = Long.parseLong(out);
+					outtime = dateConverter(outl);
+				}
 
-				Intent intent = new Intent(ListBusStopActivity.this,
-						MainActivity.class);
-				intent.putExtra("stop_name", stop);
-				startActivity(intent);
+				String mix = "In:" + intime + "                 Out:" + outtime;
+				history.add(mix);
+				// System.out.println(intime+"_________"+outtime);
 
 			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			// Student.setText("Student: "+e);
+			e.printStackTrace();
+		}
 
-		});*/
+		lv = (ListView) findViewById(R.id.list_view);
 
-		/*inputSearch.addTextChangedListener(new TextWatcher() {
+		adapter = new ArrayAdapter<String>(HistoryActivity.this,
+				R.layout.activity_singlehistory, R.id.bus_stop_name, history);
+		lv.setAdapter(adapter);
 
-			@Override
-			public void onTextChanged(CharSequence cs, int arg1, int arg2,
-					int arg3) {
-				// When user changed the Text
-				HistoryActivity.this.adapter.getFilter().filter(cs);
-			}
+		lv.setAdapter(adapter);
 
-			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1,
-					int arg2, int arg3) {
-				// TODO Auto-generated method stub
+	}
 
-			}
+	public String dateConverter(Long x) {
 
-			@Override
-			public void afterTextChanged(Editable arg0) {
-				// TODO Auto-generated method stub
-			}
-		});*/
+		SimpleDateFormat formatter = new SimpleDateFormat(
+				"dd/MM/yyyy hh:mm:ss.SSS");
+		String dateString = formatter.format(new Date(x));
+		// System.out.println(dateString);
+		return dateString;
 
 	}
 

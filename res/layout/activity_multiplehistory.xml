@@ -12,6 +12,13 @@
         android:inputType="textVisiblePassword"/>
    -->
     <!-- List View -->
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
+
     <ListView
         android:id="@+id/list_view"
         android:layout_width="fill_parent"

@@ -79,6 +79,8 @@ public class FirstTimeDialogFragment extends DialogFragment {
 		client.post(variables.HttpVariables.httpRequestURL,params, new AsyncHttpResponseHandler() {
 			@Override
 			public void onSuccess(String response) {
+				MainActivity.responseString=response;
+				System.out.println(response);
 				progressDialog.hide();
 			}
 		});
