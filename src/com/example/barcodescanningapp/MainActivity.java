@@ -47,7 +47,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		formatTxt = (TextView)findViewById(R.id.scan_format);
 		contentTxt = (TextView)findViewById(R.id.scan_content);
 		ActionBar actionBar = getActionBar();
-	    actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setBackgroundDrawable(new ColorDrawable(Color.GRAY));
 
 		//listen for clicks

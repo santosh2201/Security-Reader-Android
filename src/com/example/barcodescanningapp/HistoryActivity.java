@@ -1,34 +1,51 @@
 package com.example.barcodescanningapp;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
 
 public class HistoryActivity extends Activity {
 
-	/*// List view
+	// List view
 	private ListView lv;
 
 	// Listview Adapter
 	ArrayAdapter<String> adapter;
 
 	// Search EditText
-	EditText inputSearch;*/
+	EditText inputSearch;
 
+	@SuppressLint("NewApi")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_multiplehistory);
 
-		/*List<String> history = new ArrayList<String>();
+		ActionBar actionBar = getActionBar();
+	    actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setBackgroundDrawable(new ColorDrawable(Color.GRAY));
+		
+		
+		List<String> history = new ArrayList<String>();
 		
 
 		Intent i = this.getIntent();
-		final String bus_stop_type = i.getExtras().getString("bus_stop_type");
+		/*final String bus_stop_type = i.getExtras().getString("bus_stop_type");
 		final String bus_stop_source = i.getExtras().getString(
 				"bus_stop_source");
 		final String bus_stop_destination = i.getExtras().getString(
-				"bus_stop_destination");
+				"bus_stop_destination");*/
 
 		lv = (ListView) findViewById(R.id.list_view);
 		//inputSearch = (EditText) findViewById(R.id.inputSearch);
@@ -39,7 +56,7 @@ public class HistoryActivity extends Activity {
 				history);
 		lv.setAdapter(adapter);
 
-		lv.setAdapter(adapter);*/
+		lv.setAdapter(adapter);
 
 /*		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
